@@ -91,7 +91,7 @@ static void host_SendMasterCommand(uint16_t cmd)
 		/*	else{
 			}
 			}	*/
-}
+	}
 }
 /******************************************************************************
  * Function Name : host_process_slave_command
@@ -144,14 +144,6 @@ uint8_t host_AnalyzeCommand(uint32_t cmd)
 		host_SendMasterCommand(cmd);
 	else
 		host_SendSlaveCommand(cmd);
-	/*
-	   if(buff[0] = SLAVE_COMMAND){
-	   host_ProcessSlaveCommand(buff+1);
-	   }
-	   else if(buff[0] = MASTER_COMMAND){
-	   host_ProcessMasterCommand(buff+1);
-	   }else
-	   ret = 1;*/
 	return ret;
 }
 

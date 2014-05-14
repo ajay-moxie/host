@@ -67,11 +67,12 @@ uint32_t host_AnalyzeMasterResponse(uint16_t cmd, uint8_t *response)
  * Return Value : none
  ******************************************************************************/
 
-static void host_SendMasterCommand(uint16_t cmd)
+static void host_SendMasterCommand(uint32_t cmd)
 {
 	static uint8_t command[4];
 	static uint8_t response[3];
 	uint32_t flag = 1;
+	cmd = (cmd & 0xFF0000) >> 16;
 	while(flag){
 		switch(cmd){
 			case ENUMERATE:
@@ -95,7 +96,7 @@ static void host_SendMasterCommand(uint16_t cmd)
 
 		flag = host_AnalyzeMasterResponse(cmd, response);
 		/*	else{
-			}
+			} 
 			}	*/
 	}
 }
@@ -105,12 +106,35 @@ static void host_SendMasterCommand(uint16_t cmd)
  * Argument : none
  * Return Value : none
  ******************************************************************************/
-static void host_SendSlaveCommand(uint16_t buff)
+static void host_SendSlaveQueryCommand(uint8_t add, uint8_t command)
+{
+		static uint8_t cmd[4];
+		static uint8_t response[3];
+		cmd[0] = SLAVE_COMMAND;
+		cmd[1] = (0 << 7) | (add << 1) | 1;
+		cmd[2] = command;
+		if(host_comm.dwn_tx(cmd, HOST_FORWARD_FRAME_SIZE) != HOST_FORWARD_FRAME_SIZE){
+			fprintf(stderr, "command send failed");
+		}
+		if(host_comm.dwn_rx(response, HOST_BACKWARD_FRAME_SIZE) != 0){
+			fprintf(stderr, "response not received");
+			return;
+		}
+}
+
+
+/******************************************************************************
+ * Function Name : host_process_slave_command
+ * Description : All slave commands need to be send to downstream device
+ * Argument : none
+ * Return Value : none
+ ******************************************************************************/
+static void host_SendSlaveCommand(uint32_t buff)
 {
 		uint8_t command, add;
 		static uint8_t cmd[4];
-		add = buff >> 8;
-		command = (uint8_t)(buff);
+		add = (buff & 0x0000FF00) >> 8;
+		command = (buff & 0x00FF0000) >> 16;
 		printf("slave command %x %x", command, add);
 		switch(command){
 			case DEVICE_MIN:

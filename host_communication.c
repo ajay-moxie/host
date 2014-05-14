@@ -23,11 +23,17 @@ void host_RegisterTxRx(fn down_tx, fn down_rx)
 	host_comm.dwn_rx = down_rx;
 }
 
-uint32_t host_IsMasterCommand(uint16_t command)
+uint32_t host_CommandType(uint32_t command)
 {
 	uint32_t ret = 0;
-	if(command < MASTER_COMMAND_COUNT)
-		ret = 1;
+	command = command >> 24;
+	printf("\ncommandtype %x", command);
+	if((command & 0xFF) == MASTER_COMMAND)
+		ret = MASTER_COMMAND;
+	else if((command & 0xFF) == SLAVE_COMMAND) 
+		ret = SLAVE_COMMAND;
+	else
+		ret = NOT_SUPPORTED;
 	return ret;
 }
 
@@ -138,12 +144,21 @@ static void host_SendSlaveCommand(uint16_t buff)
 uint8_t host_AnalyzeCommand(uint32_t cmd)
 {
 	uint8_t ret = 0;
-	uint16_t command = cmd & 0x00FF;
+	uint32_t command = host_CommandType(cmd);
 
-	if(host_IsMasterCommand(command))
-		host_SendMasterCommand(cmd);
-	else
-		host_SendSlaveCommand(cmd);
+	switch(command){
+		case MASTER_COMMAND:
+			printf("\nmaster command");
+			host_SendMasterCommand(cmd);
+			break;
+		case SLAVE_COMMAND:
+			printf("\nslave command");
+			host_SendSlaveCommand(cmd);
+			break;
+		default:
+			printf("\nnot supported command");
+			break;
+	}
 	return ret;
 }
 

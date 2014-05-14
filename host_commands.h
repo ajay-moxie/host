@@ -13,9 +13,7 @@
 	#define DEVICE_MAX_CMD(cmd, add) (cmd[0] = SLAVE_COMMAND, cmd[1] = (0 << 7) | (add << 1) | 1, cmd[2] = 0x5)//YAAAAAA1 0000 0101
 #define MASTER_COMMAND 0xAA
 	#define ENUMERATE 0x1
-	#define ENUMERATE_CMD(cmd, add) (cmd[0] = MASTER_COMMAND, cmd[1] = ENUMERATE, cmd[2] = add)
 	#define DEVICE_COUNT 0x2
-	#define DEVICE_COUNT_CMD(cmd) (cmd[0] = MASTER_COMMAND, cmd[1] = DEVICE_COUNT)
 #define RESPONSE_1BYTE 0xAA 
 #define RESPONSE_2BYTE 0xbb
 	#define RESPONSE_OFFSET 0

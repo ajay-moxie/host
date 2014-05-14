@@ -27,7 +27,6 @@ uint32_t host_CommandType(uint32_t command)
 {
 	uint32_t ret = 0;
 	command = command >> 24;
-	printf("\ncommandtype %x", command);
 	if((command & 0xFF) == MASTER_COMMAND)
 		ret = MASTER_COMMAND;
 	else if((command & 0xFF) == SLAVE_COMMAND) 
@@ -60,6 +59,7 @@ uint32_t host_AnalyzeMasterResponse(uint16_t cmd, uint8_t *response)
 	}
 	return ret;
 }
+
 /******************************************************************************
  * Function Name : host_ProcessMasterCommand
  * Description : Function to read data from circular buffer.
@@ -73,16 +73,18 @@ static void host_SendMasterCommand(uint32_t cmd)
 	static uint8_t response[3];
 	uint32_t flag = 1;
 	cmd = (cmd & 0xFF0000) >> 16;
+	command[0] = 0xaa;
+	command[1] = cmd;
+	command[2] = (cmd & 0xFF00) >> 8;
+	command[3] = (cmd & 0xFF);
 	while(flag){
 		switch(cmd){
 			case ENUMERATE:
-				ENUMERATE_CMD(command, 0x0);
-				break;
 			case DEVICE_COUNT:
-				DEVICE_COUNT_CMD(command);
 				break;
 			default:
 				printf("\nNot Supported %d:", cmd);
+				return;
 				break;
 		}
 
@@ -95,9 +97,6 @@ static void host_SendMasterCommand(uint32_t cmd)
 		}
 
 		flag = host_AnalyzeMasterResponse(cmd, response);
-		/*	else{
-			} 
-			}	*/
 	}
 }
 

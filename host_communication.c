@@ -100,28 +100,48 @@ static void host_SendMasterCommand(uint32_t cmd)
 	}
 }
 
-static uint8_t host_SlaveCommand(uint16_t command)
+static uint8_t host_SlaveCommand(uint32_t command)
 {
 	uint8_t cmd;
-	command = (command & 0xFF00) >> 8;
-	cmd = command;
+	uint8_t direct_arch_power;
+	direct_arch_power = (command >> 16) & 0x1;
+	cmd = (command >> 8) & 0xFF;
+	if(direct_arch_power == 0){
+		return SLAVE_DIRECT_ARC_COMMAND;
+	}
 	if(((cmd >= 144) && (cmd <= 155)) || ((cmd >= 160) && (cmd <= 196))){
 		return SLAVE_QUERY_COMMAND;
 	}
 	else if(((cmd >= 0) && (cmd <= 8)) || ((cmd >= 16) && (cmd <= 31))){
-		return SLAVE_DIRECT_ARC_COMMAND;
+		return SLAVE_INDIRECT_ARC_COMMAND;
 	}
 	else{
 		return NOT_SUPPORTED;
 	}
 }
 /******************************************************************************
- * Function Name : host_process_slave_command
+ * Function Name : host_SendSlaveDirectArcCommand
  * Description : All slave commands need to be send to downstream device
  * Argument : none
  * Return Value : none
  ******************************************************************************/
 static void host_SendSlaveDirectArcCommand(uint8_t add, uint8_t command)
+{
+		static uint8_t cmd[4];
+		cmd[0] = SLAVE_COMMAND;
+		cmd[1] = (0 << 7) | (add << 1);
+		cmd[2] = command;
+		if(host_comm.dwn_tx(cmd, HOST_FORWARD_FRAME_SIZE) != HOST_FORWARD_FRAME_SIZE){
+			fprintf(stderr, "command send failed");
+		}
+}
+/******************************************************************************
+ * Function Name : host_SendSlaveInDirectArcCommand
+ * Description : All slave commands need to be send to downstream device
+ * Argument : none
+ * Return Value : none
+ ******************************************************************************/
+static void host_SendSlaveInDirectArcCommand(uint8_t add, uint8_t command)
 {
 		static uint8_t cmd[4];
 		cmd[0] = SLAVE_COMMAND;
@@ -164,27 +184,30 @@ static void host_SendSlaveQueryCommand(uint8_t add, uint8_t command)
 static void host_SendSlaveCommand(uint32_t buff)
 {
 		uint8_t command, add;
-		static uint8_t cmd[4];
-		add = (buff & 0x0000FF00) >> 8;
-		command = (buff & 0x00FF0000) >> 16;
-		printf("slave command %x %x", command, add);
-		switch(command){
-			case DEVICE_MIN:
-				DEVICE_MIN_CMD(cmd, add);
-				printf("\n cmd0:%x cmd1%x cmd2%x", cmd[0], cmd[1], cmd[2]);
+		static uint8_t cmd;
+		add = (buff & 0x00FF0000) >> 16;
+		add = add >> 1;
+		command = (buff & 0x0000FF00) >> 8;
+		cmd = host_SlaveCommand(buff);
+		switch(cmd){
+			case SLAVE_DIRECT_ARC_COMMAND:
+				host_SendSlaveDirectArcCommand(add, command);
+				break;
+			case SLAVE_INDIRECT_ARC_COMMAND:
+				host_SendSlaveInDirectArcCommand(add, command);
 				break;
 			case DEVICE_MAX:
-				DEVICE_MAX_CMD(cmd, add);
-				printf("\n cmd0:%x cmd1%x cmd2%x", cmd[0], cmd[1], cmd[2]);
+		//		DEVICE_MAX_CMD(cmd, add);
+		//		printf("\n cmd0:%x cmd1%x cmd2%x", cmd[0], cmd[1], cmd[2]);
 				break;
 			default:
 				printf("\n not supported");
 				return;
 				break;
 		}
-		if(host_comm.dwn_tx(cmd, HOST_FORWARD_FRAME_SIZE) != HOST_FORWARD_FRAME_SIZE){
-			fprintf(stderr, "command send failed");
-		}
+	//	if(host_comm.dwn_tx(cmd, HOST_FORWARD_FRAME_SIZE) != HOST_FORWARD_FRAME_SIZE){
+	//		fprintf(stderr, "command send failed");
+	//	}
 }
 /******************************************************************************
  * Function Name : host_analyze_commdiwand

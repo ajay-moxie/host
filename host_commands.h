@@ -6,10 +6,36 @@
 #define MASTER_COMMAND_COUNT 10
 #define SLAVE_COMMAND 0x00
 #define SLAVE_QUERY_COMMAND 10
-#define SLAVE_DIRECT_ARC_COMMAND 11
+#define SLAVE_DIRECT_ARC_COMMAND 	11
+#define SLAVE_INDIRECT_ARC_COMMAND 	12
+	#define ARCH_POWER_OFF		0x0
+	#define ARCH_POWER_UP		0x1
+	#define ARCH_POWER_DOWN		0x2
+	#define ARCH_POWER_STEP_UP	0x3
+	#define ARCH_POWER_STEP_DOWN	0x4
+	#define ARCH_POWER_RECALL_MAX	0x5
+	#define ARCH_POWER_RECALL_MIN	0x6
+	#define ARCH_POWER_STEP_DOWN_OFF	0x7
+	#define ARCH_POWER_ON_AND_STEP_UP	0x8
+	#define ARCH_POWER_GO_TO_SCENE0	(0xf + 0)
+	#define ARCH_POWER_GO_TO_SCENE1	(0xf + 1)
+	#define ARCH_POWER_GO_TO_SCENE2	(0xf + 2)
+	#define ARCH_POWER_GO_TO_SCENE3	(0xf + 3)
+	#define ARCH_POWER_GO_TO_SCENE4	(0xf + 4)
+	#define ARCH_POWER_GO_TO_SCENE5	(0xf + 5)
+	#define ARCH_POWER_GO_TO_SCENE6	(0xf + 6)
+	#define ARCH_POWER_GO_TO_SCENE7	(0xf + 7)
+	#define ARCH_POWER_GO_TO_SCENE8	(0xf + 8)
+	#define ARCH_POWER_GO_TO_SCENE9	(0xf + 9)
+	#define ARCH_POWER_GO_TO_SCENE10	(0xf + 10)
+	#define ARCH_POWER_GO_TO_SCENE11	(0xf + 11)
+	#define ARCH_POWER_GO_TO_SCENE12	(0xf + 12)
+	#define ARCH_POWER_GO_TO_SCENE13	(0xf + 13)
+	#define ARCH_POWER_GO_TO_SCENE14	(0xf + 14)
+	#define ARCH_POWER_GO_TO_SCENE15	(0xf + 15)
 	#define DEVICE_MIN MASTER_COMMAND_COUNT + 1
 	#define DEVICE_MIN_CMD(cmd, add) (cmd[0] = SLAVE_COMMAND, cmd[1] = ((0 << 7) | (add << 1) | 1), cmd[2] = 0x6)//YAAAAAA1 0000 0110
-	#define DEVICE_MAX MASTER_COMMAND_COUNT + 2
+	#define DEVICE_MAX MASTER_COMMAND_COUNT + 3
 	#define DEVICE_MAX_CMD(cmd, add) (cmd[0] = SLAVE_COMMAND, cmd[1] = (0 << 7) | (add << 1) | 1, cmd[2] = 0x5)//YAAAAAA1 0000 0101
 #define MASTER_COMMAND 0xAA
 	#define ENUMERATE 0x1

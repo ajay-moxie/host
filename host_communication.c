@@ -162,6 +162,7 @@ static void host_SendSlaveQueryCommand(uint8_t add, uint8_t command)
 {
 		static uint8_t cmd[4];
 		static uint8_t response[3];
+		uint32_t reply;
 		cmd[0] = SLAVE_COMMAND;
 		cmd[1] = (0 << 7) | (add << 1) | 1;
 		cmd[2] = command;
@@ -172,6 +173,8 @@ static void host_SendSlaveQueryCommand(uint8_t add, uint8_t command)
 			fprintf(stderr, "response not received");
 			return;
 		}
+		reply = response[1];
+		printf("\nresponse = %x", reply);
 }
 
 
@@ -196,7 +199,8 @@ static void host_SendSlaveCommand(uint32_t buff)
 			case SLAVE_INDIRECT_ARC_COMMAND:
 				host_SendSlaveInDirectArcCommand(add, command);
 				break;
-			case DEVICE_MAX:
+			case SLAVE_QUERY_COMMAND:
+				host_SendSlaveQueryCommand(add, command);
 		//		DEVICE_MAX_CMD(cmd, add);
 		//		printf("\n cmd0:%x cmd1%x cmd2%x", cmd[0], cmd[1], cmd[2]);
 				break;

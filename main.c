@@ -13,6 +13,7 @@ menu_commands()
 	printf("\nGet Device Count: %x", (MASTER_COMMAND << 24) | (DEVICE_COUNT << 16));
 	printf("\nIn Direct ARCH POWER Commands %x", SLAVE_INDIRECT_ARC_COMMAND);
 	printf("\nDirect ARCH POWER Commands %x", SLAVE_DIRECT_ARC_COMMAND);
+	printf("\nslave query commands %x", SLAVE_QUERY_COMMAND);
 	printf("\n-----------------------------\n");
 }
 
@@ -25,6 +26,54 @@ uint32_t direct_arc_power_commands_menu()
 	printf("\nbroadcase: FF\ngroup:( 4<0-f>\nshort address: <0-3F>\n");
 	scanf("%x",&addr);
 	return (SLAVE_COMMAND << 24) | (addr << 17) | (command << 8);
+}
+uint32_t slave_query_commands_menu()
+{
+	static uint32_t command;
+	static uint32_t addr;
+	printf("\n QUERY_STATUS: %x", QUERY_STATUS);
+	printf("\n QUERY_BALLAST: %x", QUERY_BALLAST);
+	printf("\n QUERY_LAMP_FAILURE: %x", QUERY_LAMP_FAILURE);
+	printf("\n QUERY_LAMP_POWER_ON: %x", QUERY_LAMP_POWER_ON);
+	printf("\n QUERY_LIMIT_ERROR: %x", QUERY_LIMIT_ERROR);
+	printf("\n QUERY_RESET_STATE: %x", QUERY_RESET_STATE);
+	printf("\n QUERY_MISSING_SHORT_ADD: %x", QUERY_MISSING_SHORT_ADD);
+	printf("\n QUERY_VERSION_NO: %x", QUERY_VERSION_NO);
+	printf("\n QUERY_CONTENT_DTR: %x", QUERY_CONTENT_DTR);
+	printf("\n QUERY_DEVICE_TYPE: %x", QUERY_DEVICE_TYPE);
+	printf("\n QUERY_PHYSICAL_MIN_LEVEL: %x", QUERY_PHYSICAL_MIN_LEVEL);
+	printf("\n QUERY_POWER_FAILURE: %x", QUERY_POWER_FAILURE);
+	printf("\n QUERY_ACTUAL_LEVEL: %x", QUERY_ACTUAL_LEVEL);
+	printf("\n QUERY_MAX_LEVEL: %x", QUERY_MAX_LEVEL);
+	printf("\n QUERY_MIN_LEVEL: %x", QUERY_MIN_LEVEL);
+	printf("\n QUERY_POWER_ON_LEVEL:%x", QUERY_POWER_ON_LEVEL);
+	printf("\n QUERY_SYSTEL_FAILURE_LEVEL: %x", QUERY_SYSTEL_FAILURE_LEVEL);
+	printf("\n QUERY_SYSTEL_FADE_RATE: %x", QUERY_SYSTEL_FADE_RATE);
+	printf("\n QUERY_SCENE0_LEVEL: %x", QUERY_SCENE0_LEVEL);
+	printf("\n QUERY_SCENE1_LEVEL: %x", QUERY_SCENE1_LEVEL);
+	printf("\n QUERY_SCENE2_LEVEL: %x", QUERY_SCENE2_LEVEL);
+	printf("\n QUERY_SCENE3_LEVEL: %x", QUERY_SCENE3_LEVEL);
+	printf("\n QUERY_SCENE4_LEVEL: %x", QUERY_SCENE4_LEVEL);
+	printf("\n QUERY_SCENE5_LEVEL: %x", QUERY_SCENE5_LEVEL);
+	printf("\n QUERY_SCENE6_LEVEL: %x", QUERY_SCENE6_LEVEL);
+	printf("\n QUERY_SCENE7_LEVEL: %x", QUERY_SCENE7_LEVEL);
+	printf("\n QUERY_SCENE8_LEVEL: %x", QUERY_SCENE8_LEVEL);
+	printf("\n QUERY_SCENE9_LEVEL: %x", QUERY_SCENE9_LEVEL);
+	printf("\n QUERY_SCENE10_LEVEL: %x", QUERY_SCENE10_LEVEL);
+	printf("\n QUERY_SCENE11_LEVEL: %x", QUERY_SCENE11_LEVEL);
+	printf("\n QUERY_SCENE12_LEVEL: %x", QUERY_SCENE12_LEVEL);
+	printf("\n QUERY_SCENE13_LEVEL: %x", QUERY_SCENE13_LEVEL);
+	printf("\n QUERY_SCENE14_LEVEL: %x", QUERY_SCENE14_LEVEL);
+	printf("\n QUERY_SCENE15_LEVEL: %x", QUERY_SCENE15_LEVEL);
+	printf("\n QUERY_GROUP_0_7: %x", QUERY_GROUP_0_7);
+	printf("\n QUERY_GROUP_8_15: %x", QUERY_GROUP_8_15);
+	printf("\n QUERY_RANDOM_ADD_H: %x", QUERY_RANDOM_ADD_H);
+	printf("\n QUERY_RANDOM_ADD_M: %x", QUERY_RANDOM_ADD_M);
+	printf("\n QUERY_RANDOM_ADD_L: %x\n", QUERY_RANDOM_ADD_L);
+	scanf("%x",&command);
+	printf("\nshort address: <0-3F>\n");
+	scanf("%x",&addr);
+	return (SLAVE_COMMAND << 24) | (addr << 17) | (1 << 16) | (command << 8);
 }
 uint32_t indirect_arc_power_commands_menu()
 {
@@ -76,6 +125,10 @@ main(int argc, char *argv[])
 			case SLAVE_DIRECT_ARC_COMMAND:
 			command = direct_arc_power_commands_menu();
 			break;
+			case SLAVE_QUERY_COMMAND:
+			command = slave_query_commands_menu();
+			break;
+
 		}
 		printf("\ncommand = %x", command);
 		host_AnalyzeCommand(command);

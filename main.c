@@ -11,6 +11,7 @@ menu_commands()
 	printf("\nEnumerate all: %x", (MASTER_COMMAND << 24) | (ENUMERATE << 16));
 	printf("\nEnumerate <address>: %x%x<address>00", MASTER_COMMAND,ENUMERATE);
 	printf("\nGet Device Count: %x", (MASTER_COMMAND << 24) | (DEVICE_COUNT << 16));
+	printf("\nConfigure Device %x", MASTER_CONFIGURATION_COMMAND);
 	printf("\nIn Direct ARCH POWER Commands %x", SLAVE_INDIRECT_ARC_COMMAND);
 	printf("\nDirect ARCH POWER Commands %x", SLAVE_DIRECT_ARC_COMMAND);
 	printf("\nslave query commands %x", SLAVE_QUERY_COMMAND);
@@ -27,6 +28,91 @@ uint32_t direct_arc_power_commands_menu()
 	scanf("%x",&addr);
 	return (SLAVE_COMMAND << 24) | (addr << 17) | (command << 8);
 }
+
+uint32_t master_conf_commands_menu()
+{
+	static uint32_t command;
+	static uint32_t addr;
+	printf("\nCONF_RESET %x", CONF_RESET);
+	printf("\nCONF_STR_LVL_DTR %x", CONF_STR_LVL_DTR);
+	printf("\nCONF_STR_MAX_LVL_DTR %x", CONF_STR_MAX_LVL_DTR);
+	printf("\nCONF_STR_MIN_LVL_DTR %x", CONF_STR_MIN_LVL_DTR);
+	printf("\nCONF_STR_SYS_FAILURE_DTR %x", CONF_STR_SYS_FAILURE_DTR);
+	printf("\nCONF_STR_POWER_ON_LVL_DTR %x", CONF_STR_POWER_ON_LVL_DTR);
+	printf("\nCONF_STR_FADE_TIME_DTR %x", CONF_STR_FADE_TIME_DTR);
+	printf("\nCONF_STR_FADE_RATE_DTR %x", CONF_STR_FADE_RATE_DTR);
+	printf("\nCONF_STR_SCENE0_DTR %x", CONF_STR_SCENE0_DTR);
+	printf("\nCONF_STR_SCENE1_DTR %x", CONF_STR_SCENE1_DTR);
+	printf("\nCONF_STR_SCENE2_DTR %x", CONF_STR_SCENE2_DTR);
+	printf("\nCONF_STR_SCENE3_DTR %x", CONF_STR_SCENE3_DTR);
+	printf("\nCONF_STR_SCENE4_DTR %x", CONF_STR_SCENE4_DTR);
+	printf("\nCONF_STR_SCENE5_DTR %x", CONF_STR_SCENE5_DTR);
+	printf("\nCONF_STR_SCENE6_DTR %x", CONF_STR_SCENE6_DTR);
+	printf("\nCONF_STR_SCENE7_DTR %x", CONF_STR_SCENE7_DTR);
+	printf("\nCONF_STR_SCENE8_DTR %x", CONF_STR_SCENE8_DTR);
+	printf("\nCONF_STR_SCENE9_DTR %x", CONF_STR_SCENE9_DTR);
+	printf("\nCONF_STR_SCENE10_DTR %x", CONF_STR_SCENE10_DTR);
+	printf("\nCONF_STR_SCENE11_DTR %x", CONF_STR_SCENE11_DTR);
+	printf("\nCONF_STR_SCENE12_DTR %x", CONF_STR_SCENE12_DTR);
+	printf("\nCONF_STR_SCENE13_DTR %x", CONF_STR_SCENE13_DTR);
+	printf("\nCONF_STR_SCENE14_DTR %x", CONF_STR_SCENE14_DTR);
+	printf("\nCONF_STR_SCENE15_DTR %x", CONF_STR_SCENE15_DTR);
+	printf("\nCONF_RMV_SCENE0_DTR %x", CONF_RMV_SCENE0_DTR);
+	printf("\nCONF_RMV_SCENE1_DTR %x", CONF_RMV_SCENE1_DTR);
+	printf("\nCONF_RMV_SCENE2_DTR %x", CONF_RMV_SCENE2_DTR);
+	printf("\nCONF_RMV_SCENE3_DTR %x", CONF_RMV_SCENE3_DTR);
+	printf("\nCONF_RMV_SCENE4_DTR %x", CONF_RMV_SCENE4_DTR);
+	printf("\nCONF_RMV_SCENE5_DTR %x", CONF_RMV_SCENE5_DTR);
+	printf("\nCONF_RMV_SCENE6_DTR %x", CONF_RMV_SCENE6_DTR);
+	printf("\nCONF_RMV_SCENE7_DTR %x", CONF_RMV_SCENE7_DTR);
+	printf("\nCONF_RMV_SCENE8_DTR %x", CONF_RMV_SCENE8_DTR);
+	printf("\nCONF_RMV_SCENE9_DTR %x", CONF_RMV_SCENE9_DTR);
+	printf("\nCONF_RMV_SCENE10_DTR %x", CONF_RMV_SCENE10_DTR);
+	printf("\nCONF_RMV_SCENE11_DTR %x", CONF_RMV_SCENE11_DTR);
+	printf("\nCONF_RMV_SCENE12_DTR %x", CONF_RMV_SCENE12_DTR);
+	printf("\nCONF_RMV_SCENE13_DTR %x", CONF_RMV_SCENE13_DTR);
+	printf("\nCONF_RMV_SCENE14_DTR %x", CONF_RMV_SCENE14_DTR);
+	printf("\nCONF_RMV_SCENE15_DTR %x", CONF_RMV_SCENE15_DTR);
+	printf("\nCONF_ADD_GRP0 %x", CONF_ADD_GRP0);
+	printf("\nCONF_ADD_GRP1 %x", CONF_ADD_GRP1);
+	printf("\nCONF_ADD_GRP2 %x", CONF_ADD_GRP2);
+	printf("\nCONF_ADD_GRP3 %x", CONF_ADD_GRP3);
+	printf("\nCONF_ADD_GRP4 %x", CONF_ADD_GRP4);
+	printf("\nCONF_ADD_GRP5 %x", CONF_ADD_GRP5);
+	printf("\nCONF_ADD_GRP6 %x", CONF_ADD_GRP6);
+	printf("\nCONF_ADD_GRP7 %x", CONF_ADD_GRP7);
+	printf("\nCONF_ADD_GRP8 %x", CONF_ADD_GRP8);
+	printf("\nCONF_ADD_GRP9 %x", CONF_ADD_GRP9);
+	printf("\nCONF_ADD_GRP10 %x", CONF_ADD_GRP10);
+	printf("\nCONF_ADD_GRP11 %x", CONF_ADD_GRP11);
+	printf("\nCONF_ADD_GRP12 %x", CONF_ADD_GRP12);
+	printf("\nCONF_ADD_GRP13 %x", CONF_ADD_GRP13);
+	printf("\nCONF_ADD_GRP14 %x", CONF_ADD_GRP14);
+	printf("\nCONF_ADD_GRP15 %x", CONF_ADD_GRP15);
+	printf("\nCONF_RMV_GRP0 %x", CONF_RMV_GRP0);
+	printf("\nCONF_RMV_GRP1 %x", CONF_RMV_GRP1);
+	printf("\nCONF_RMV_GRP2 %x", CONF_RMV_GRP2);
+	printf("\nCONF_RMV_GRP3 %x", CONF_RMV_GRP3);
+	printf("\nCONF_RMV_GRP4 %x", CONF_RMV_GRP4);
+	printf("\nCONF_RMV_GRP5 %x", CONF_RMV_GRP5);
+	printf("\nCONF_RMV_GRP6 %x", CONF_RMV_GRP6);
+	printf("\nCONF_RMV_GRP7 %x", CONF_RMV_GRP7);
+	printf("\nCONF_RMV_GRP8 %x", CONF_RMV_GRP8);
+	printf("\nCONF_RMV_GRP9 %x", CONF_RMV_GRP9);
+	printf("\nCONF_RMV_GRP10 %x", CONF_RMV_GRP10);
+	printf("\nCONF_RMV_GRP11 %x", CONF_RMV_GRP11);
+	printf("\nCONF_RMV_GRP12 %x", CONF_RMV_GRP12);
+	printf("\nCONF_RMV_GRP13 %x", CONF_RMV_GRP13);
+	printf("\nCONF_RMV_GRP14 %x", CONF_RMV_GRP14);
+	printf("\nCONF_RMV_GRP15 %x", CONF_RMV_GRP15);
+	printf("\nCONF_STR_SHORT_ADD_DTR %x\n", CONF_STR_SHORT_ADD_DTR);
+
+	scanf("%x",&command);
+	printf("\nshort address: <0-3F>\n");
+	scanf("%x",&addr);
+	return (MASTER_COMMAND << 24) | (MASTER_CONFIGURATION_COMMAND << 16) | (addr << 9) | (1 << 8) | (command );
+}
+
 uint32_t slave_query_commands_menu()
 {
 	static uint32_t command;
@@ -127,6 +213,9 @@ main(int argc, char *argv[])
 			break;
 			case SLAVE_QUERY_COMMAND:
 			command = slave_query_commands_menu();
+			break;
+			case MASTER_CONFIGURATION_COMMAND:
+			command = master_conf_commands_menu();
 			break;
 
 		}

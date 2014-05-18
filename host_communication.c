@@ -53,6 +53,11 @@ uint32_t host_AnalyzeMasterResponse(uint16_t cmd, uint8_t *response)
 				set_slave_count(response[1]);
 			}
 			break;
+		case MASTER_CONFIGURATION_COMMAND:
+			if((response[0] == RESPONSE_1BYTE) && (response[1] == ACK)){
+				printf("\nConfigured");
+			}
+			break;
 		default:
 			printf("\nNot Supported %d", cmd);
 			break;
@@ -72,15 +77,16 @@ static void host_SendMasterCommand(uint32_t cmd)
 	static uint8_t command[4];
 	static uint8_t response[3];
 	uint32_t flag = 1;
-	cmd = (cmd & 0xFF0000) >> 16;
+//	cmd = (cmd & 0xFF0000) >> 16;
 	command[0] = 0xaa;
-	command[1] = cmd;
+	command[1] = ((cmd & 0xFF0000) >> 16);
 	command[2] = (cmd & 0xFF00) >> 8;
 	command[3] = (cmd & 0xFF);
 	while(flag){
-		switch(cmd){
+		switch(command[1]){
 			case ENUMERATE:
 			case DEVICE_COUNT:
+			case MASTER_CONFIGURATION_COMMAND:
 				break;
 			default:
 				printf("\nNot Supported %d:", cmd);
@@ -96,7 +102,7 @@ static void host_SendMasterCommand(uint32_t cmd)
 			return;
 		}
 
-		flag = host_AnalyzeMasterResponse(cmd, response);
+		flag = host_AnalyzeMasterResponse(command[1], response);
 	}
 }
 

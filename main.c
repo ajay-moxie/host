@@ -1,8 +1,9 @@
 #include<stdio.h>
-#include"serial_windows.h"
-#include "host_commands.h"
 #include "typedef.h"
-
+#include "config.h"
+#include"serial_windows.h"
+#include "wifi_windows.h"
+#include "host_commands.h"
 
 menu_commands()
 {
@@ -199,8 +200,14 @@ uint32_t indirect_arc_power_commands_menu()
 main(int argc, char *argv[])
 {
 	static uint32_t command;
+#ifdef SERIAL_CONFIG
 	open_serial(argv[1]);
 	host_RegisterTxRx(write_serial, read_serial);
+#endif
+#ifdef WIFI_CONFIG
+	open_wifi(argv[1], atoi(argv[2]));	
+	host_RegisterTxRx(write_wifi, read_wifi);
+#endif
 	while(1){
 		menu_commands();
 		scanf("%x",&command);

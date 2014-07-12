@@ -115,7 +115,7 @@ static uint8_t host_SlaveCommand(uint32_t command)
 	if(direct_arch_power == 0){
 		return SLAVE_DIRECT_ARC_COMMAND;
 	}
-	if(((cmd >= 144) && (cmd <= 155)) || ((cmd >= 160) && (cmd <= 196))){
+	if(((cmd >= 144) && (cmd <= 155)) || (cmd == 159) || ((cmd >= 160) && (cmd <= 196))){
 		return SLAVE_QUERY_COMMAND;
 	}
 	else if(((cmd >= 0) && (cmd <= 8)) || ((cmd >= 16) && (cmd <= 31))){

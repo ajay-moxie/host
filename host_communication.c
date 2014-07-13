@@ -74,8 +74,8 @@ uint32_t host_AnalyzeMasterResponse(uint16_t cmd, uint8_t *response)
 
 static void host_SendMasterCommand(uint32_t cmd)
 {
-	static uint8_t command[4];
-	static uint8_t response[3];
+	static uint8_t command[HOST_FORWARD_FRAME_SIZE];
+	static uint8_t response[HOST_BACKWARD_FRAME_SIZE];
 	uint32_t flag = 1;
 //	cmd = (cmd & 0xFF0000) >> 16;
 	command[0] = 0xaa;
@@ -133,7 +133,7 @@ static uint8_t host_SlaveCommand(uint32_t command)
  ******************************************************************************/
 static void host_SendSlaveDirectArcCommand(uint8_t add, uint8_t command)
 {
-		static uint8_t cmd[4];
+		static uint8_t cmd[HOST_FORWARD_FRAME_SIZE];
 		cmd[0] = SLAVE_COMMAND;
 		cmd[1] = (0 << 7) | (add << 1);
 		cmd[2] = command;
@@ -149,7 +149,7 @@ static void host_SendSlaveDirectArcCommand(uint8_t add, uint8_t command)
  ******************************************************************************/
 static void host_SendSlaveInDirectArcCommand(uint8_t add, uint8_t command)
 {
-		static uint8_t cmd[4];
+		static uint8_t cmd[HOST_FORWARD_FRAME_SIZE];
 		cmd[0] = SLAVE_COMMAND;
 		cmd[1] = (0 << 7) | (add << 1) | 1;
 		cmd[2] = command;
@@ -166,8 +166,8 @@ static void host_SendSlaveInDirectArcCommand(uint8_t add, uint8_t command)
  ******************************************************************************/
 static void host_SendSlaveQueryCommand(uint8_t add, uint8_t command)
 {
-		static uint8_t cmd[4];
-		static uint8_t response[3];
+		static uint8_t cmd[HOST_FORWARD_FRAME_SIZE];
+		static uint8_t response[HOST_BACKWARD_FRAME_SIZE];
 		uint32_t reply;
 		cmd[0] = SLAVE_COMMAND;
 		cmd[1] = (0 << 7) | (add << 1) | 1;

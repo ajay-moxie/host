@@ -77,6 +77,8 @@ static void host_SendMasterCommand(uint32_t cmd)
 	static uint8_t command[HOST_FORWARD_FRAME_SIZE];
 	static uint8_t response[HOST_BACKWARD_FRAME_SIZE];
 	uint32_t flag = 1;
+	uint8_t buff[HOST_FORWARD_FRAME_SIZE + 1];
+	uint32_t addr;
 //	cmd = (cmd & 0xFF0000) >> 16;
 	command[0] = 0xaa;
 	command[1] = ((cmd & 0xFF0000) >> 16);
@@ -88,12 +90,26 @@ static void host_SendMasterCommand(uint32_t cmd)
 			case DEVICE_COUNT:
 			case MASTER_CONFIGURATION_COMMAND:
 				break;
+			case DEVICE_NAME:
+				printf("\nDevice Name: 8 char max ");
+				scanf("%s",buff);
+				command[3] = buff[0];
+				command[4] = buff[1];
+				command[5] = buff[2];
+				command[6] = buff[3];
+				command[7] = buff[4];
+				command[8] = buff[5];
+				command[9] = buff[6];
+				command[10] = buff[7];
+				printf("\nDevice Address: 0-3F");
+				scanf("%x",&addr);
+				command[2] = addr;
+				break;
 			default:
 				printf("\nNot Supported %d:", cmd);
 				return;
 				break;
 		}
-
 		if(host_comm.dwn_tx(command, HOST_FORWARD_FRAME_SIZE) != HOST_FORWARD_FRAME_SIZE){
 			fprintf(stderr, "command send failed");
 		}

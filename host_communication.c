@@ -58,6 +58,11 @@ uint32_t host_AnalyzeMasterResponse(uint16_t cmd, uint8_t *response)
 				printf("\nConfigured");
 			}
 			break;
+		case DEVICE_NAME:
+			if((response[0] == RESPONSE_1BYTE) && (response[1] == ACK)){
+				printf("\nName Changed");
+			}
+			break;
 		default:
 			printf("\nNot Supported %d", cmd);
 			break;

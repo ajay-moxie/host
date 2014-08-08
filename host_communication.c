@@ -63,6 +63,11 @@ uint32_t host_AnalyzeMasterResponse(uint16_t cmd, uint8_t *response)
 				printf("\nName Changed");
 			}
 			break;
+		case DEVICE_ROOM:
+			if((response[0] == RESPONSE_1BYTE) && (response[1] == ACK)){
+				printf("\nRoom Changed");
+			}
+			break;
 		default:
 			printf("\nNot Supported %d", cmd);
 			break;
@@ -97,6 +102,21 @@ static void host_SendMasterCommand(uint32_t cmd)
 				break;
 			case DEVICE_NAME:
 				printf("\nDevice Name: 8 char max ");
+				scanf("%s",buff);
+				command[3] = buff[0];
+				command[4] = buff[1];
+				command[5] = buff[2];
+				command[6] = buff[3];
+				command[7] = buff[4];
+				command[8] = buff[5];
+				command[9] = buff[6];
+				command[10] = buff[7];
+				printf("\nDevice Address: 0-3F");
+				scanf("%x",&addr);
+				command[2] = addr;
+				break;
+			case DEVICE_ROOM:
+				printf("\nDevice Room: 8 char max ");
 				scanf("%s",buff);
 				command[3] = buff[0];
 				command[4] = buff[1];

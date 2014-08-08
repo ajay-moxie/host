@@ -13,6 +13,7 @@ menu_commands()
 	printf("\nEnumerate <address>: %x%x<address>00", MASTER_COMMAND,ENUMERATE);
 	printf("\nGet Device Count: %x", (MASTER_COMMAND << 24) | (DEVICE_COUNT << 16));
 	printf("\nSet Device Name: %x", (MASTER_COMMAND << 24) | (DEVICE_NAME << 16));
+	printf("\nSet Device Room: %x", (MASTER_COMMAND << 24) | (DEVICE_ROOM << 16));
 	printf("\nConfigure Device %x", MASTER_CONFIGURATION_COMMAND);
 	printf("\nIn Direct ARCH POWER Commands %x", SLAVE_INDIRECT_ARC_COMMAND);
 	printf("\nDirect ARCH POWER Commands %x", SLAVE_DIRECT_ARC_COMMAND);

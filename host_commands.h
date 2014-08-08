@@ -89,6 +89,7 @@
 	#define ENUMERATE 0x1
 	#define DEVICE_COUNT 0x2
 	#define DEVICE_NAME 0x3
+	#define DEVICE_ROOM 0x4
 #define MASTER_CONFIGURATION_COMMAND 13
 	#define CONF_RESET	32
 	#define CONF_STR_LVL_DTR	33
